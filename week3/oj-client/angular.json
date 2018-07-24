@@ -25,7 +25,14 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/ace-builds/src-min-noconflict/ace.js",
+              "./node_modules/ace-builds/src-min-noconflict/theme-xcode.js",
+              "./node_modules/ace-builds/src-min-noconflict/mode-java.js",
+              "./node_modules/ace-builds/src-min-noconflict/mode-c_cpp.js",
+              "./node_modules/ace-builds/src-min-noconflict/mode-python.js",
+              "./node_modules/ace-builds/src-min-noconflict/mode-javascript.js"
+            ]
           },
           "configurations": {
             "production": {
