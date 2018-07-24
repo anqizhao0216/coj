@@ -63,13 +63,12 @@ int main(){
     this.editor.setTheme("ace/theme/xcode");
     this.editor.setFontSize(18);
     this.editor.setValue(this.defaultContent['Java']);
-    // this.editor.$blockScrolling = Infinity;
+    this.editor.$blockScrolling = Infinity;
     this.resetEditor();
 
     document.getElementsByTagName('textarea')[0].focus();
 
     //send session id to collaboration service
-    // this.collaboration.init();
     this.collaboration.init(this.editor, this.sessionID);
     this.editor.lastAppliedChange = null;
 
@@ -83,14 +82,12 @@ int main(){
     });
 
     //registering cursor change event callback function
-    // this.editor.getSession().getSelection().on('changeCursor', () => {
-    //   let cursor = this.editor.getSession().getSelection().getCursor();
-    //   // console.log('Cursor chage: '+ JSON.stringify(cursor));
-    //
-    //   this.collaboration.cursorMove(JSON.stringify(cursor));
-    // });
-    //
-    // this.collaboration.restoreBuffer();
+    this.editor.getSession().getSelection().on('changeCursor', () => {
+      let cursor = this.editor.getSession().getSelection().getCursor();
+      this.collaboration.cursorMove(JSON.stringify(cursor));
+    });
+
+    this.collaboration.restoreBuffer();
   }
 
   submit(){

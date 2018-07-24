@@ -9,15 +9,6 @@ module.exports = function(io){
 
 	var sessionPath = '/oj_server/';
 
-  // io.on('connection', (socket) => {
-  //   console.log(socket);
-	//
-  //   var message = socket.handshake.query['message'];
-  //   console.log(message);
-	//
-  //   io.to(socket.id).emit('message', 'haha from server');
-  // })
-
 	io.on('connection', (socket)=>{
 		var sessionID = socket.handshake.query['sessionID'];
 		socketIDtoSessionID[socket.id] = sessionID;
@@ -53,54 +44,32 @@ module.exports = function(io){
 	// 	}
   //
   //   // collaborations[sessionID]['participants'].push(socket.id);
-  //
-	// 	//add change event listener
+
+		//add change event listener
 		socket.on('change', (changeInEditor) => {
-			let sessionID = socketIDtoSessionID[socket.id];
-			console.log('sessionID: ' + sessionID + ', change: ' + changeInEditor);
-	// 		let sessionID = socketIDtoSessionID[socket.id];
-			if(sessionID in collaborations){
-        let participants = collaborations[sessionID]['participants'];
-        for (let i = 0; i < participants.length; i++) {
-          if (socket.id != participants[i]) {
-            io.to(participants[i]).emit('change', changeInEditor);
-          }
-        }
-	// 			collaborations[sessionID]['cachedInstructions'].push(
-	// 				['change', changeInEditor, Date.now()]
-	// 			);
-			} else{
-				console.log('sessionID is not in collaborations');
-			}
-  //
-	// 		forwardEvent(socket.id, 'change', changeInEditor);
-  //
+			forwardEvent(socket.id, 'change', changeInEditor);
 		});
-  //
-  //   //add cursor move event listener
-	// 	socket.on('cursorMove', (cursor) => {
-	// 		let sessionID = socketIDtoSessionID[socket.id];
-	// 		//console.log('sessionID: ' + sessionID + ', socketID: ' + socket.id + ', cursor move: ' + cursor);
-	// 		cursor = JSON.parse(cursor);
-	// 		cursor["socketID"] = socket.id;
-	// 		cursor = JSON.stringify(cursor);
-  //
-	// 		forwardEvent(socket.id, 'cursorMove', cursor);
-  //
-	// 	});
-  //
-  //   socket.on('restoreBuffer', () => {
-  //     var sessionID = socketIDtoSessionID[socket.id];
-  //     console.log('restore buffer to session:' + sessionID);
-  //
-  //     if(sessionID in collaborations){
-  //       let cachedInstructions = collaborations[sessionID]['cachedInstructions'];
-  //       for(let i = 0; i < cachedInstructions.length; i++){
-  //         socket.emit(cachedInstructions[i][0], cachedInstructions[i][1]);
-  //       }
-  //     }
-  //   });
-  //
+
+    //add cursor move event listener
+		socket.on('cursorMove', (cursor) => {
+			cursor = JSON.parse(cursor);
+			cursor["socketID"] = socket.id;
+			cursor = JSON.stringify(cursor);
+			forwardEvent(socket.id, 'cursorMove', cursor);
+		});
+
+    socket.on('restoreBuffer', () => {
+      var sessionID = socketIDtoSessionID[socket.id];
+      console.log('restore buffer to session:' + sessionID);
+
+      if(sessionID in collaborations){
+        let cachedInstructions = collaborations[sessionID]['cachedInstructions'];
+        for(let i = 0; i < cachedInstructions.length; i++){
+          socket.emit(cachedInstructions[i][0], cachedInstructions[i][1]);
+        }
+      }
+    });
+
   // 	socket.on('disconnect', () => {
 	// 		var sessionID = socketIDtoSessionID[socket.id];
 	// 		console.log('socket '+ socket.id + ' disconnected from session ' + sessionID);
@@ -128,19 +97,19 @@ module.exports = function(io){
 	// 		}
 	// 	});
   //
-  //   var forwardEvent = function(socketID, eventName, dataString){
-  //   	let sessionID = socketIDtoSessionID[socketID];
-  //
-  //   	if(sessionID in collaborations){
-  //   		let participants = collaborations[sessionID]['participants'];
-  //   		for(let i=0; i<participants.length; i++){
-  //   			if(participants[i] != socketID){
-  //   				io.to(participants[i]).emit(eventName, dataString);
-  //   			}
-  //   		}
-  //   	}else{
-  //   		console.log('sessionID is not in the collaborations');
-  //   	}
-  //   }
+    var forwardEvent = function(socketID, eventName, dataString) {
+    	let sessionID = socketIDtoSessionID[socketID];
+
+    	if(sessionID in collaborations){
+    		let participants = collaborations[sessionID]['participants'];
+    		for(let i=0; i<participants.length; i++){
+    			if(participants[i] != socketID){
+    				io.to(participants[i]).emit(eventName, dataString);
+    			}
+    		}
+    	}else{
+    		console.log('sessionID is not in the collaborations');
+    	}
+    }
   });
 }
