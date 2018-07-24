@@ -5,7 +5,7 @@
 /tmp
 /out-tsc
 
-/public
+public/
 oj-client/dist/
 
 # dependencies
