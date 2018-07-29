@@ -26,6 +26,7 @@
               "src/styles.css"
             ],
             "scripts": [
+              "./node_modules/auth0-js/build/auth0.js",
               "./node_modules/ace-builds/src-min-noconflict/ace.js",
               "./node_modules/ace-builds/src-min-noconflict/theme-xcode.js",
               "./node_modules/ace-builds/src-min-noconflict/mode-java.js",
