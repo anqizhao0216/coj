@@ -14,6 +14,8 @@ export class EditorComponent implements OnInit {
   languages: string[] = ["Java","Python","C++","JavaScript"];
   sessionID: string;
   output: string;
+  loading: boolean;
+  showResult: boolean;
 
   languagesMap = {
     "Java":"java",
@@ -92,6 +94,8 @@ int main(){
 
   submit(){
     this.output = "";
+    this.loading = true;
+    this.showResult = true;
     console.log('submit the answer....');
     const userCodes = this.editor.getValue();
     console.log(userCodes);
@@ -100,7 +104,10 @@ int main(){
       language: this.language.toLocaleLowerCase()
     };
     this.data.buildAndRun(submitCode)
-        .then( res => this.output = res.text );
+        .then( res => {
+          this.output = res.text
+          this.loading = false;
+    });
   }
 
   setLanguage(language: string){

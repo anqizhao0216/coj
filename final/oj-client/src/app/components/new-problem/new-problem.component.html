@@ -1,9 +1,20 @@
-<div>
-  <form #formRef="ngForm">
-    <div class="form-group">
+<div >
+  <div class="panel panel-info" *ngIf="!auth.isAuthenticated()">
+    <div class="panel-heading"> Please sign in first before adding new problems!</div>
+    <div class="panel-body">
+      Username: admin@gmail.com
+      <br/>
+      Password: 2018-auth
+    </div>
+  </div>
+  <form #formRef="ngForm" *ngIf="auth.isAuthenticated()" class="data-toggle">
+    <div class="form-group" >
       <label for="problemName">Problem Name</label>
       <input type="text" class="form-control" id="problemName"
-      name="problemName" required placeholder="Enter Problem Name" [(ngModel)]="newProblem.name" >
+      name="problemName"  placeholder="Enter Problem Name" [(ngModel)]="newProblem.name" ng-required="requireField">
+      <div *ngIf="requireField" class="alert alert-warning" role="alert">
+        <strong>This field cannot be empty</strong>
+      </div>
     </div>
 
     <div class="form-group">
@@ -14,7 +25,7 @@
     </div>
 
     <div class="form-group">
-      <label for="difficulty">difficulty</label>
+      <label for="difficulty">Difficulty</label>
       <select  class="form-control" id="difficulty"
       name="difficulty"   [(ngModel)]="newProblem.difficulty">
         <option *ngFor="let difficulty of difficulties" [value]="difficulty">
@@ -30,3 +41,4 @@
     </div>
   </form>
 </div>
+<br/>

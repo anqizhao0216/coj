@@ -35,15 +35,22 @@
 
 	</header>
 	<div class="row">
-		<div id="editor">
-		</div>
-	</div>
-	<div class="row">
-		{{output}}
+		<div id="editor"></div>
 	</div>
 	<footer>
 		<button type="button" class="btn btn-success pull-right" (click)="submit()">
 			Submit Solution
 		</button>
 	</footer>
+
+</section>
+<br/>
+<br/>
+<section *ngIf="showResult">
+	<div class="panel panel-default">
+		<div class="panel-heading">Run Code Result: <span class="loader" *ngIf="loading">Judging...</span><span *ngIf="!loading">Finished</span></div>
+		<div class="panel-body">
+			<div>{{output}}</div>
+		</div>
+	</div>
 </section>
