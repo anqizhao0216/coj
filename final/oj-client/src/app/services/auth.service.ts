@@ -20,8 +20,8 @@ export class AuthService {
     clientID: '3PHKJzzKW0DfKLFpckQ9YNsYWdz5Kq9k',
     domain: 'coj0818.auth0.com',
     responseType: 'token id_token',
-    audience: 'https://coj0818.auth0.com/userinfo',
-    redirectUri: 'http://localhost:3000/callback',
+    audience: 'https://coj0818.auth0.com/',
+    redirectUri: 'http://localhost:3000/',
     scope: 'openid profile read:messages write:messages'
   });
 
